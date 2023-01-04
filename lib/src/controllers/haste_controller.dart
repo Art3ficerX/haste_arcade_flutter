@@ -1,7 +1,6 @@
 library haste_arcade_flutter;
 
 import 'package:nonce/nonce.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../consts/haste_configs.dart';
 import '../services/http.dart';
@@ -18,8 +17,6 @@ class HasteArcadeFlutter {
     };
     var response0 = await _httpService.post(
         uri: "$authServerEndpoint/cli", jsonBody: body, headers: headers0);
-    Uri url = Uri.parse("$authClientEndpoint${response0["browserUrl"]}");
-    launchUrl(url);
     Map<String, String> headers1 = {
       'authorization': "Bearer ${response0['token']}",
     };
@@ -27,7 +24,10 @@ class HasteArcadeFlutter {
         uri: "$authServerEndpoint/cli/${response0['requestorId']}",
         headers: headers1);
 
-    return response1;
+    return {
+      "accessToken": response1["access_token"],
+      "browserUrl": "$authClientEndpoint${response0["browserUrl"]}"
+    };
   }
 
   Future<Map<String, dynamic>> getLeaderboards(
