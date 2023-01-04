@@ -15,19 +15,21 @@ class HasteArcadeFlutter {
     Map<String, String> headers0 = {
       'Content-Type': 'application/json; charset=UTF-8',
     };
-    var response0 = await _httpService.post(
+    var response = await _httpService.post(
         uri: "$authServerEndpoint/cli", jsonBody: body, headers: headers0);
-    Map<String, String> headers1 = {
-      'authorization': "Bearer ${response0['token']}",
-    };
-    var response1 = await _httpService.get(
-        uri: "$authServerEndpoint/cli/${response0['requestorId']}",
-        headers: headers1);
+    return response;
+  }
 
-    return {
-      "accessToken": response1["access_token"],
-      "browserUrl": "$authClientEndpoint${response0["browserUrl"]}"
+  Future<Map<String, dynamic>> getAccessToken(
+      String bearerToken, String requestorId) async {
+    Map<String, String> headers0 = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': "Bearer $bearerToken",
     };
+    var response = await _httpService.get(
+        uri: "$authServerEndpoint/cli/$requestorId", headers: headers0);
+    return response;
   }
 
   Future<Map<String, dynamic>> getLeaderboards(
