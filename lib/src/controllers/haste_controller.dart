@@ -9,22 +9,6 @@ import '../services/http.dart';
 class HasteArcadeFlutter {
   final HttpService _httpService = HttpService();
 
-  Future<dynamic> init(
-      {required String clientId, required String clientSecret}) async {
-    Map<String, String> body = {
-      "clientId": clientId,
-      "clientSecret": clientSecret,
-    };
-    Map<String, String> headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-    };
-    var response = await _httpService.post(
-        uri: "$apiServerEndpoint/oauth/writetoken",
-        jsonBody: body,
-        headers: headers);
-    return response;
-  }
-
   Future<Map<String, dynamic>> initAuth() async {
     Map<String, String> body = {
       "description": Nonce.generate(),
